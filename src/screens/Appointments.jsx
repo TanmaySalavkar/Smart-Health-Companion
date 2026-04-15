@@ -17,7 +17,7 @@ const Appointments = () => {
             <View style={styles.card}>
               <Text style={styles.doctorName}>{item.doctor.name}</Text>
               <Text style={styles.specialization}>{item.doctor.specialization}</Text>
-              <Text style={styles.date}>Date: {new Date(item.date).toLocaleDateString()}</Text>
+              <Text style={styles.date}>Schedule: {item.day} at {item.time}</Text>
             </View>
           )}
         />

@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  const [user, setUser] = useState({ name: "John Doe" });
+  const [user, setUser] = useState({ name: "User" });
   const [appointments, setAppointments] = useState([]);
 
   // Load appointments from AsyncStorage on mount
@@ -23,12 +23,14 @@ export const AppProvider = ({ children }) => {
   }, []);
 
   // Book an appointment Function
-  const bookAppointment = async (doctor) => {
+  const bookAppointment = async (doctor, selectedDay, selectedTime) => {
     try {
       const newAppointment = {
         id: Date.now().toString(), // unique ID
         doctor,
-        date: new Date().toISOString(), // Mock time
+        day: selectedDay,
+        time: selectedTime,
+        dateBooked: new Date().toISOString(), // Record of when it was booked
       };
       const updatedAppointments = [...appointments, newAppointment];
       

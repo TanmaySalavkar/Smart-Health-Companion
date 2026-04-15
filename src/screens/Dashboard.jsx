@@ -24,9 +24,9 @@ const Dashboard = ({ navigation }) => {
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>Health</Text>
-          <Text style={styles.cardValue}>98%</Text>
-          <Text style={styles.cardLabel}>Score</Text>
+          <Text style={styles.cardTitle}>Daily</Text>
+          <Text style={styles.cardValue}>3</Text>
+          <Text style={styles.cardLabel}>Reminders</Text>
         </View>
       </View>
 

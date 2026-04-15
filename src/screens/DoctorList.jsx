@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import DoctorCard from "../components/DoctorCard";
 import Loader from "../components/Loader";
 import ErrorView from "../components/ErrorView";
-import { getDoctors } from "../services/mockApi";
+import { getDoctors } from "../services/api";
 
 export default function DoctorList({ navigation }) {
   const [data, setData] = useState([]);
