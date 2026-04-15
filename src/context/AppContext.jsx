@@ -43,8 +43,20 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const cancelAppointment = async (id) => {
+    try {
+      const updatedAppointments = appointments.filter(app => app.id !== id);
+      setAppointments(updatedAppointments);
+      await AsyncStorage.setItem('@appointments', JSON.stringify(updatedAppointments));
+      return true;
+    } catch (e) {
+      console.error("Failed to cancel appointment", e);
+      return false;
+    }
+  };
+
   return (
-    <AppContext.Provider value={{ user, appointments, bookAppointment }}>
+    <AppContext.Provider value={{ user, appointments, bookAppointment, cancelAppointment }}>
       {children}
     </AppContext.Provider>
   );
