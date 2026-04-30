@@ -14,7 +14,6 @@ A full-stack React Native mobile application designed to connect patients with d
 - **Appointment Management**: Book, review, and cancel active appointments globally.
 
 ## 📸 Screenshots
-## 📸 Screenshots
 <p align="center">
   <img src="https://github.com/user-attachments/assets/39cd652c-e141-4d44-906d-cdd1ff52c848" width="30%" height="600px" />
   <img src="https://github.com/user-attachments/assets/e2a9ff9e-0e3b-4319-b144-d3727e3ba447" width="30%" height="600px" />
