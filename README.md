@@ -15,11 +15,10 @@ A full-stack React Native mobile application designed to connect patients with d
 
 ## 📸 Screenshots
 <p align="center">
-  <img src="./screenshots/dashboard.png" width="30%" height="600px" />
-  <img src="./screenshots/finddoctor.png" width="30%" height="600px" />
-  <img src="./screenshots/booking.png" width="30%" height="600px" />
-  <img src="./screenshots/appointments.png" width="30%" height="600px" />
-</p>
+  <img src="./screenshots/Dashboard.jpeg" width="23%" />
+  <img src="./screenshots/finddoctor.jpeg" width="23%" />
+  <img src="./screenshots/Booking.jpeg" width="23%" />
+  <img src="./screenshots/Appointments.jpeg" width="23%" /></p>
 
 ---
 
