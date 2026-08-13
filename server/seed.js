@@ -45,6 +45,14 @@ const doctors = [
       { day: "Saturday", times: ["09:00 AM", "12:00 PM", "02:00 PM"] }
     ]
   },
+    { 
+    id: 6, name: "Dr. Kohli", specialization: "ENT", rating: 4.4,
+    description: "Dr. Kohli leads the ENT surgery wing, dealing with Ear, Nose and Throat, sports injuries, and complex joint replacements.",
+    availability: [
+      { day: "Wednesday", times: ["10:00 AM", "11:00 AM"] },
+      { day: "Saturday", times: ["09:00 AM", "12:00 PM", "06:00 PM"] }
+    ]
+  },
 ];
 
 const seedDB = async () => {

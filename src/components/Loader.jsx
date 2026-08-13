@@ -1,10 +1,12 @@
 import React from 'react';
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, ActivityIndicator, StyleSheet, Text } from 'react-native';
+import { COLORS, FONTS } from '../theme';
 
-const Loader = ({ size = "large", color = "#0066cc" }) => {
+const Loader = ({ size = "large", message = "Loading..." }) => {
   return (
     <View style={styles.container}>
-      <ActivityIndicator size={size} color={color} />
+      <ActivityIndicator size={size} color={COLORS.primary} />
+      <Text style={styles.message}>{message}</Text>
     </View>
   );
 };
@@ -15,6 +17,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    backgroundColor: COLORS.bgFallback,
+  },
+  message: {
+    ...FONTS.caption,
+    marginTop: 12,
+    color: COLORS.textSecondary,
   },
 });
 

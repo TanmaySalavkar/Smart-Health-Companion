@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  const [user, setUser] = useState({ name: "User" });
+  const [user, setUser] = useState({ name: "Tanmay" });
   const [appointments, setAppointments] = useState([]);
 
   // Load appointments from AsyncStorage on mount

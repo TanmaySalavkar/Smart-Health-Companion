@@ -1,6 +1,16 @@
 import React, { useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, StatusBar } from 'react-native';
+import GradientBackground from '../components/GradientBackground';
+import SearchIcon from '../components/SearchIcon';
 import { AppContext } from '../context/AppContext';
+import { COLORS, SPACING, RADIUS, SHADOWS, FONTS } from '../theme';
+
+const CATEGORIES = [
+  { id: 'heart', label: 'Heart', emoji: '❤️', bg: COLORS.heartRed, color: COLORS.heartIcon },
+  { id: 'dental', label: 'Dental', emoji: '🦷', bg: COLORS.dentalBlue, color: COLORS.dentalIcon },
+  { id: 'brain', label: 'Brain', emoji: '🧠', bg: COLORS.brainPurple, color: COLORS.brainIcon },
+  { id: 'general', label: 'General', emoji: '🏥', bg: COLORS.generalGreen, color: COLORS.generalIcon },
+];
 
 const Dashboard = ({ navigation }) => {
   const { user, appointments } = useContext(AppContext);
@@ -10,116 +20,264 @@ const Dashboard = ({ navigation }) => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Hello, {user.name} 👋</Text>
-        <Text style={styles.subtitle}>How are you feeling today?</Text>
-      </View>
-
-      <View style={styles.summaryContainer}>
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>Upcoming</Text>
-          <Text style={styles.cardValue}>{appointments.length}</Text>
-          <Text style={styles.cardLabel}>Appointments</Text>
+    <GradientBackground style={styles.gradient}>
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        {/* Header */}
+        <View style={styles.header}>
+          <View style={styles.headerRow}>
+            <View>
+              <Text style={styles.greeting}>Hello, {user.name} 👋</Text>
+              <Text style={styles.subtitle}>Find your desired specialist</Text>
+            </View>
+            <View style={styles.avatarCircle}>
+              <Text style={styles.avatarText}>{user.name?.[0] || 'U'}</Text>
+            </View>
+          </View>
         </View>
 
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>Daily</Text>
-          <Text style={styles.cardValue}>3</Text>
-          <Text style={styles.cardLabel}>Reminders</Text>
+        {/* Search Bar */}
+        <TouchableOpacity
+          style={styles.searchBar}
+          onPress={() => navigation.navigate("Doctors")}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.searchPlaceholder}>Search for doctor</Text>
+          <View style={styles.searchIcon}>
+            <SearchIcon size={20} color={COLORS.textWhite} />
+          </View>
+        </TouchableOpacity>
+
+        {/* Category Section */}
+        <Text style={styles.sectionTitle}>Category</Text>
+        <View style={styles.categoriesRow}>
+          {CATEGORIES.map(cat => (
+            <TouchableOpacity
+              key={cat.id}
+              style={styles.categoryItem}
+              onPress={() => navigation.navigate("Doctors")}
+              activeOpacity={0.7}
+            >
+              <View style={[styles.categoryIcon, { backgroundColor: cat.bg }]}>
+                <Text style={styles.categoryEmoji}>{cat.emoji}</Text>
+              </View>
+              <Text style={styles.categoryLabel}>{cat.label}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
-      </View>
 
-      <View style={styles.actionsContainer}>
-        <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate("Doctors")}>
-          <Text style={styles.actionButtonText}>Find a Doctor</Text>
+        {/* Summary Cards */}
+        <View style={styles.summaryContainer}>
+          <TouchableOpacity
+            style={styles.summaryCard}
+            onPress={() => navigation.navigate("Appointments")}
+            activeOpacity={0.7}
+          >
+            <View style={[styles.summaryIconCircle, { backgroundColor: COLORS.ratingBg }]}>
+              <Text style={styles.summaryEmoji}>📅</Text>
+            </View>
+            <Text style={styles.summaryValue}>{appointments.length}</Text>
+            <Text style={styles.summaryLabel}>Appointments</Text>
+          </TouchableOpacity>
+
+          <View style={styles.summaryCard}>
+            <View style={[styles.summaryIconCircle, { backgroundColor: COLORS.heartRed }]}>
+              <Text style={styles.summaryEmoji}>💊</Text>
+            </View>
+            <Text style={styles.summaryValue}>3</Text>
+            <Text style={styles.summaryLabel}>Reminders</Text>
+          </View>
+        </View>
+
+        {/* Action Buttons */}
+        <TouchableOpacity
+          style={styles.primaryButton}
+          onPress={() => navigation.navigate("Doctors")}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.primaryButtonText}>Find a Doctor</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.actionButton, styles.secondaryButton]} onPress={() => navigation.navigate("Appointments")}>
-          <Text style={[styles.actionButtonText, styles.secondaryButtonText]}>View Appointments</Text>
+        <TouchableOpacity
+          style={styles.secondaryButton}
+          onPress={() => navigation.navigate("Appointments")}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.secondaryButtonText}>View Appointments</Text>
         </TouchableOpacity>
-      </View>
-    </View>
+
+        <View style={{ height: 40 }} />
+      </ScrollView>
+    </GradientBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#f5f5f5',
+    paddingHorizontal: SPACING.xl,
   },
   header: {
-    marginBottom: 30,
-    marginTop: 20,
+    marginTop: 50,
+    marginBottom: SPACING.xxl,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: '#333',
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  greeting: {
+    ...FONTS.h1,
+    fontSize: 26,
   },
   subtitle: {
+    ...FONTS.body,
+    marginTop: SPACING.xs,
+    color: COLORS.textSecondary,
     fontSize: 16,
-    color: '#666',
-    marginTop: 5,
   },
+  avatarCircle: {
+    width: 48,
+    height: 48,
+    borderRadius: RADIUS.circle,
+    backgroundColor: COLORS.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    ...SHADOWS.soft,
+  },
+  avatarText: {
+    color: COLORS.textWhite,
+    fontSize: 20,
+    fontWeight: '700',
+  },
+
+  // Search
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.cardBg,
+    borderRadius: RADIUS.pill,
+    paddingLeft: SPACING.xl,
+    paddingRight: SPACING.xs,
+    paddingVertical: SPACING.xs,
+    marginBottom: SPACING.xxl,
+    borderWidth: 1,
+    borderColor: COLORS.cardBorder,
+    ...SHADOWS.soft,
+  },
+  searchPlaceholder: {
+    flex: 1,
+    ...FONTS.body,
+    color: COLORS.textLight,
+  },
+  searchIcon: {
+    width: 42,
+    height: 42,
+    borderRadius: RADIUS.circle,
+    backgroundColor: COLORS.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  // Categories
+  sectionTitle: {
+    ...FONTS.h3,
+    marginBottom: SPACING.lg,
+  },
+  categoriesRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: SPACING.xxl,
+  },
+  categoryItem: {
+    alignItems: 'center',
+    width: 72,
+  },
+  categoryIcon: {
+    width: 56,
+    height: 56,
+    borderRadius: RADIUS.xl,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: SPACING.sm,
+    ...SHADOWS.soft,
+  },
+  categoryEmoji: {
+    fontSize: 24,
+  },
+  categoryLabel: {
+    ...FONTS.caption,
+    color: COLORS.textSecondary,
+  },
+
+  // Summary cards
   summaryContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 40,
+    marginBottom: SPACING.xxl,
+    gap: SPACING.md,
   },
-  card: {
+  summaryCard: {
     flex: 1,
-    backgroundColor: "#fff",
-    padding: 20,
-    borderRadius: 15,
-    marginHorizontal: 5,
+    backgroundColor: COLORS.cardBg,
+    padding: SPACING.xl,
+    borderRadius: RADIUS.xl,
     alignItems: 'center',
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    borderWidth: 1,
+    borderColor: COLORS.cardBorder,
+    ...SHADOWS.card,
   },
-  cardTitle: {
-    fontSize: 14,
-    color: '#888',
-    marginBottom: 10,
-  },
-  cardValue: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#0066cc',
-  },
-  cardLabel: {
-    fontSize: 14,
-    color: '#666',
-    marginTop: 5,
-  },
-  actionsContainer: {
-    gap: 15,
-  },
-  actionButton: {
-    backgroundColor: '#0066cc',
-    padding: 16,
-    borderRadius: 12,
+  summaryIconCircle: {
+    width: 44,
+    height: 44,
+    borderRadius: RADIUS.circle,
+    justifyContent: 'center',
     alignItems: 'center',
-    elevation: 2,
-    marginBottom: 15,
+    marginBottom: SPACING.md,
   },
-  actionButtonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
+  summaryEmoji: {
+    fontSize: 20,
+  },
+  summaryValue: {
+    fontSize: 30,
+    fontWeight: '700',
+    color: COLORS.primary,
+  },
+  summaryLabel: {
+    ...FONTS.caption,
+    marginTop: SPACING.xs,
+  },
+
+  // Buttons
+  primaryButton: {
+    backgroundColor: COLORS.primary,
+    paddingVertical: SPACING.lg,
+    borderRadius: RADIUS.pill,
+    alignItems: 'center',
+    marginBottom: SPACING.lg,
+    ...SHADOWS.button,
+  },
+  primaryButtonText: {
+    ...FONTS.button,
+    fontSize: 17,
   },
   secondaryButton: {
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#0066cc',
+    backgroundColor: COLORS.cardBg,
+    paddingVertical: SPACING.lg,
+    borderRadius: RADIUS.pill,
+    alignItems: 'center',
+    borderWidth: 1.5,
+    borderColor: COLORS.primary,
+    marginBottom: SPACING.lg,
   },
   secondaryButtonText: {
-    color: '#0066cc',
-  }
+    ...FONTS.button,
+    color: COLORS.primary,
+    fontSize: 17,
+  },
 });
 
 export default Dashboard;
