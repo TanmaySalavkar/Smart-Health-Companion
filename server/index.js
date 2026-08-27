@@ -1,71 +1,52 @@
 require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const Doctor = require('./models/Doctor');
+const authRoutes = require('./routes/authRoutes');
+const dietRoutes = require('./routes/dietRoutes');
 
 const mongoUri = process.env.MONGO_URI;
-
-mongoose.connect(mongoUri)
-  .then(() => console.log('Connected to MongoDB Atlas'))
-  .catch(err => console.error('Could not connect to MongoDB:', err));
-
 const PORT = process.env.PORT || 3000;
 
-let serverStarted = false;
+// Connect to MongoDB
+mongoose.connect(mongoUri)
+  .then(() => console.log('✅ Connected to MongoDB Atlas'))
+  .catch(err => console.error('❌ Could not connect to MongoDB:', err));
 
-try {
-  const express = require('express');
-  const cors = require('cors');
+const app = express();
 
-  const app = express();
-  app.use(cors());
-  app.use(express.json());
+// Middleware
+app.use(cors());
+app.use(express.json({ limit: '10mb' })); // Support base64 image payloads
 
-  app.get('/api/doctors', async (req, res) => {
-    try {
-      const doctors = await Doctor.find();
-      res.json(doctors);
-    } catch (err) {
-      console.error('Error fetching doctors:', err);
-      res.status(500).json({ error: 'Failed to fetch doctors' });
-    }
-  });
+// ── Routes ──────────────────────────────────────────
+// Health check
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
 
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-  serverStarted = true;
-} catch (e) {
-  console.log('Express module load error, starting built-in HTTP server fallback:', e.message);
-}
+// Existing Doctors API
+app.get('/api/doctors', async (req, res) => {
+  try {
+    const doctors = await Doctor.find();
+    res.json(doctors);
+  } catch (err) {
+    console.error('Error fetching doctors:', err);
+    res.status(500).json({ error: 'Failed to fetch doctors' });
+  }
+});
 
-if (!serverStarted) {
-  const http = require('http');
-  const server = http.createServer(async (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+// Auth routes (register, login, me)
+app.use('/api/auth', authRoutes);
 
-    if (req.method === 'OPTIONS') {
-      res.writeHead(204);
-      res.end();
-      return;
-    }
+// Diet routes (dashboard, scan, log, history)
+app.use('/api/diet', dietRoutes);
 
-    if ((req.url === '/api/doctors' || req.url === '/api/doctors/') && req.method === 'GET') {
-      try {
-        const doctors = await Doctor.find();
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(doctors));
-      } catch (err) {
-        res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Failed to fetch doctors' }));
-      }
-    } else {
-      res.writeHead(404, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Not Found' }));
-    }
-  });
-
-  server.listen(PORT, () => console.log(`HTTP Server running on port ${PORT}`));
-}
-
-
-
+// ── Start Server ────────────────────────────────────
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`   Auth:  POST /api/auth/register, POST /api/auth/login, GET /api/auth/me`);
+  console.log(`   Diet:  GET /api/diet/dashboard, POST /api/diet/scan, POST /api/diet/log, GET /api/diet/history`);
+  console.log(`   Docs:  GET /api/doctors`);
+});
