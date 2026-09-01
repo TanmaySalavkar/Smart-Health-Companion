@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Eye, EyeOff } from 'lucide-react-native';
+import { Eye, EyeOff, Home, Heart, Salad, Bell } from 'lucide-react-native';
 
 
 // NutriTrack Modern Sleek Logo Emblem
@@ -141,6 +141,26 @@ export const EyeIcon = ({ size = 22, color = '#16A34A' }) => {
 // EyeOff Icon using Lucide
 export const EyeOffIcon = ({ size = 22, color = '#94A3B8' }) => {
   return <EyeOff size={size} color={color} strokeWidth={2} />;
+};
+
+// Home Icon using Lucide
+export const HomeIcon = ({ size = 20, color = '#C8FF00' }) => {
+  return <Home size={size} color={color} strokeWidth={2} />;
+};
+
+// Heart Icon (Habits) using Lucide
+export const HeartIcon = ({ size = 20, color = 'rgba(255,255,255,0.4)' }) => {
+  return <Heart size={size} color={color} strokeWidth={2} />;
+};
+
+// Salad Icon (Meals) using Lucide
+export const SaladIcon = ({ size = 20, color = 'rgba(255,255,255,0.4)' }) => {
+  return <Salad size={size} color={color} strokeWidth={2} />;
+};
+
+// Bell Icon (To-do) using Lucide
+export const BellIcon = ({ size = 20, color = 'rgba(255,255,255,0.4)' }) => {
+  return <Bell size={size} color={color} strokeWidth={2} />;
 };
 
 // Warning Alert Icon Component

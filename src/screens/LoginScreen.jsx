@@ -45,7 +45,7 @@ const LoginScreen = ({ navigation }) => {
             <View style={s.logoBadgeWrapper}>
               <NutriTrackLogo size={78} />
             </View>
-            <Text style={s.appTitle}>NutriTrack</Text>
+            <Text style={s.appTitle}>NuFi</Text>
             <Text style={s.appSub}>Smart Diet & Health Companion</Text>
           </View>
 

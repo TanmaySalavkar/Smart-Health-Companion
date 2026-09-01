@@ -242,7 +242,7 @@ const RegisterScreen = ({ navigation }) => {
           {/* Branded Header */}
           <View style={s.logoArea}>
             <View style={s.logoBadge}><NutriTrackLogo size={62} /></View>
-            <Text style={s.appTitle}>NutriTrack</Text>
+            <Text style={s.appTitle}>NuFi</Text>
             <Text style={s.appSub}>Smart Diet & Health Companion</Text>
           </View>
 
